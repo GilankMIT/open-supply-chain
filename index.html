@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+    <script src="./supply-chain-contract.js"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile View Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .username {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://via.placeholder.com/50" alt="Profile Image" class="profile-img">
+        <h1 class="username">Username</h1>
+    </div>
+    <main>
+        <p>This is the main content of the page.</p>
+    </main>
+    
+    <script>
+      // Set up the RPC provider
+      const rpcProvider = 'https://polygon-mumbai.g.alchemy.com/v2/3OTDDx67tpTmDkyeRPzRq6j7PU7jHgZA'; // replace with your RPC endpoint
+      const web3 = new Web3(new Web3.providers.HttpProvider(rpcProvider));
+
+      // Load the contract ABI from a separate file
+        // Set up the contract address
+      const contractAddress = '0x59c7530066469E2fdCFbb6010E8B20c3EB05bA9c'; // replace with your contract's address
+
+      // Create a new instance of the contract
+      const contract = new web3.eth.Contract(supplyChainABI, contractAddress);
+
+      // Set up event listener for button click
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.addEventListener('click', async () => {
+        // Get the supply node ID from the input field
+        const supplyNodeId = document.getElementById('supplyNodeId').value;
+
+        // Call the contract function and get the returned value
+        const result = await contract.methods.allSupplyNodes(supplyNodeId).call();
+
+        // Update the result element with the returned value
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerText = JSON.stringify(result);
+      });
+    </script>
+  </body>
+</html>
